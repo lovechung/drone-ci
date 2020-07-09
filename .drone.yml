@@ -1,0 +1,67 @@
+kind: pipeline
+type: docker
+name: ci-cd-demo
+
+volumes:
+  - name: maven_local_repo
+    host:
+      path: /app/data/maven_local_repo
+
+steps:
+  - name: build
+    image: maven:3-jdk-8
+    volumes:
+      - name: maven_local_repo
+        path: /root/.m2
+    commands:
+      - mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
+  - name: deploy
+    image: appleboy/drone-ssh
+    settings:
+      host: 112.13.201.108
+#      host: iishoni.com
+      username: root
+      key:
+        from_secret: ssh_key
+      port: 2022
+      command_timeout: 3m
+      script_stop: false
+      script:
+        - docker-compose ps
+  #  - name: notify
+  #    image: plugins/webhook
+  #    settings:
+  #      urls:
+  #        from_secret: notify_url
+  #      content_type: application/x-www-form-urlencoded
+  #      template: |
+  #        text=`部署{{ build.status }}`&desp=在{{ repo.name }}的{{build.branch}}上{{ build.event }}了{{truncate build.commit 8}}的commit, 结果 {{ build.status }} 了, 耗时{{ since build.started }}, 点这里[查询]({{ build.link }})
+  #      debug: true
+  #    when: # 无论成功失败都运行
+  #      status:
+  #        - failure
+  #        - success
+  - name: notify
+    image: yakumioto/drone-serverchan
+    settings:
+      key:
+        from_secret: serverchan_key
+      text: 部署{DRONE_BUILD_STATUS}
+      desp: 耗时{{ since build.started }}, 点这里[查询]({{ build.link }})
+
+---
+kind: pipeline
+type: ssh
+name: default
+
+server:
+  host: 112.13.201.108
+  user: root
+  port: 2022
+  password:
+    from_secret: ssh_password
+
+steps:
+  - name: greeting
+    commands:
+      - echo hello worldd
