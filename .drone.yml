@@ -19,7 +19,6 @@ steps:
     image: appleboy/drone-ssh
     settings:
       host: 112.13.201.108
-#      host: iishoni.com
       username: root
       key:
         from_secret: ssh_key
