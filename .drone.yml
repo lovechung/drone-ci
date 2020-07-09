@@ -15,6 +15,13 @@ steps:
         path: /root/.m2
     commands:
       - mvn clean -DskipTests=true -Dmaven.javadoc.skip=true
+  - name: docker
+    image: plugins/docker
+    settings:
+      username: daixk1212
+      password: dxk19911212
+      repo: drone-ci
+      tags: latest
   - name: deploy
     image: appleboy/drone-ssh
     settings:
