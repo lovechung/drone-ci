@@ -43,12 +43,13 @@ steps:
 
   # 钉钉通知
   - name: dingtalk
-    image: lddsb/drone-dingtalk-message:1.2.4
+    image: lddsb/drone-dingtalk-message
     settings:
       token:
         from_secret: dingtalk_token
       type: markdown
       tpl: ./markdown.tpl
+      tips_title: 新的构建已完成，请测试
       message_color: true
       success_color: CC00FF
       failure_color: e15430
