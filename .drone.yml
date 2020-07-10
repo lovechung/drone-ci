@@ -22,6 +22,7 @@ steps:
       password: dxk?19911212
       repo: registry.cn-hangzhou.aliyuncs.com/hbhb/drone-ci
       tags: latest
+      dockerfile: ./Dockerfile
   - name: deploy
     image: appleboy/drone-ssh
     settings:
