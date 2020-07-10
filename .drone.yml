@@ -24,18 +24,18 @@ steps:
       registry: registry.cn-hangzhou.aliyuncs.com
       tags: latest
       dockerfile: ./Dockerfile
-  - name: deploy
-    image: appleboy/drone-ssh
-    settings:
-      host: 112.13.201.108
-      username: root
-      key:
-        from_secret: ssh_key
-      port: 2022
-      command_timeout: 3m
-      script_stop: false
-      script:
-        - docker-compose ps
+#  - name: deploy
+#    image: appleboy/drone-ssh
+#    settings:
+#      host: 112.13.201.108
+#      username: root
+#      key:
+#        from_secret: ssh_key
+#      port: 2022
+#      command_timeout: 3m
+#      script_stop: false
+#      script:
+#        - docker-compose ps
   #  - name: notify
   #    image: plugins/webhook
   #    settings:
@@ -57,3 +57,18 @@ steps:
       text: 部署{DRONE_BUILD_STATUS}
       desp: 耗时{{ since build.started }}, 点这里[查询]({{ build.link }})
 
+---
+kind: pipeline
+type: ssh
+name: default
+
+server:
+  host: 120.78.150.87
+  user: root
+  port: 22
+  password: root@iishoni.2017
+
+steps:
+  - name: greeting
+    commands:
+      - echo hello worldd
