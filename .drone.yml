@@ -45,7 +45,8 @@ steps:
   - name: dingtalk
     image: lddsb/drone-dingtalk-message
     settings:
-      token: d0edc79758683c62866f3303a0aa1c8239485d30d85e07204153f4890f323f6a
+      token:
+        from_secret: dingtalk_token
       type: markdown
       message_color: true
       message_pic: true
