@@ -50,7 +50,7 @@ steps:
       type: markdown
       tpl: ./markdown.tpl
       message_color: true
-      success_color: 009900
+      success_color: 008000
       failure_color: FF0000
       tpl_build_status_success: 成功
       tpl_build_status_failure: 失败
@@ -63,3 +63,5 @@ volumes:
   - name: maven_local_repo
     host:
       path: /app/data/maven_local_repo
+
+
