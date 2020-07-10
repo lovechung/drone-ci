@@ -2,11 +2,6 @@ kind: pipeline
 type: docker
 name: default
 
-volumes:
-  - name: maven_local_repo
-    host:
-      path: /app/data/maven_local_repo
-
 steps:
   # maven打包
   - name: build
@@ -16,67 +11,49 @@ steps:
         path: /root/.m2
     commands:
       - mvn clean -Ptest package -DskipTests=true -Dmaven.javadoc.skip=true
+
   # docker镜像推送
-  - name: docker
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: docker_registry_username
-      password:
-        from_secret: docker_registry_password
-      repo: registry.cn-hangzhou.aliyuncs.com/hbhb/drone-ci
-      registry: registry.cn-hangzhou.aliyuncs.com
-      tags: latest
-      dockerfile: ./Dockerfile
-      mirror: https://wm9kcxms.mirror.aliyuncs.com
-  # ssh远程执行脚本
-#  - name: deploy
-#    image: appleboy/drone-ssh
+#  - name: docker
+#    image: plugins/docker
 #    settings:
-#      host: 112.13.201.108
-#      port: 2022
-#      username: root
-#      password: Qaz2@wsx
+#      username:
+#        from_secret: docker_user
+#      password:
+#        from_secret: docker_pwd
+#      mirror: https://wm9kcxms.mirror.aliyuncs.com
+#      repo: registry.cn-hangzhou.aliyuncs.com/hbhb/drone-ci
+#      registry: registry.cn-hangzhou.aliyuncs.com
+#      tags: latest
+#      dockerfile: ./Dockerfile
+
+  # ssh远程执行脚本
+  - name: deploy
+    image: appleboy/drone-ssh
+    settings:
+      host: 112.13.201.108
+      port: 2022
+      username: root
+      password: Qaz2@wsx
 #      key:
 #        from_secret: ssh_key
-#      command_timeout: 3m
-#      script_stop: false
-#      script:
-#        - docker-compose ps
-#  - name: notify
-#    image: plugins/webhook
-#    settings:
-#      urls:
-#        from_secret: notify_url
-#      content_type: application/x-www-form-urlencoded
-#      template: |
-#        text=`部署{{ build.status }}`&desp=在{{ repo.name }}的{{build.branch}}上{{ build.event }}了{{truncate build.commit 8}}的commit, 结果 {{ build.status }} 了, 耗时{{ since build.started }}, 点这里[查询]({{ build.link }})
-#      debug: true
-#    when: # 无论成功失败都运行
-#      status:
-#        - failure
-#        - success
-  # 消息推送
-  - name: notify
-    image: yakumioto/drone-serverchan
-    settings:
-      key:
-        from_secret: serverchan_key
-      text: 部署{DRONE_BUILD_STATUS}
-      desp: 耗时{{ since build.started }}, 点这里[查询]({{ build.link }})
+      command_timeout: 3m
+      script_stop: false
+      script:
+        - docker-compose ps
 
-#---
-#kind: pipeline
-#type: ssh
-#name: ssh-connect
-#
-#server:
-#  host: 120.78.150.87
-#  user: root
-#  port: 22
-#  password: root@iishoni.2017
-#
-#steps:
-#  - name: greeting
-#    commands:
-#      - echo hello worldd
+  # 钉钉通知
+  - name: dingtalk
+    image: lddsb/drone-dingtalk-message
+    settings:
+      token: d0edc79758683c62866f3303a0aa1c8239485d30d85e07204153f4890f323f6a
+      type: markdown
+      message_color: true
+      message_pic: true
+      sha_link: true
+    when:
+      status: [failure, success]
+
+volumes:
+  - name: maven_local_repo
+    host:
+      path: /app/data/maven_local_repo
