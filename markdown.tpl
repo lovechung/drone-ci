@@ -8,4 +8,4 @@
 
 [[TPL_COMMIT_SHA]]([TPL_COMMIT_LINK])
 
-<font color=[TPL_STATUS_COLOR]> [点击这里查看构建详情]([TPL_BUILD_LINK]) </font>
+<font color=[TPL_STATUS_COLOR]> [点击这里查看drone构建详情]([TPL_BUILD_LINK]) </font>
