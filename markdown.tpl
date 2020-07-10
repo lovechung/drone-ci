@@ -6,4 +6,4 @@
 
 [[TPL_COMMIT_SHA]]([TPL_COMMIT_LINK])
 
-[点击这里查看详情]([TPL_BUILD_LINK])
+[点击这里查看构建详情]([TPL_BUILD_LINK])
