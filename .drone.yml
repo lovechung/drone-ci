@@ -27,19 +27,19 @@ steps:
 #      dockerfile: ./Dockerfile
 
   # ssh远程执行脚本
-#  - name: deploy
-#    image: appleboy/drone-ssh
-#    settings:
-#      host: 112.13.201.108
-#      port: 22
-#      username: root
-##      password: Qaz2@wsx
-#      key:
-#        from_secret: ssh_key
-#      command_timeout: 3m
-#      script_stop: false
-#      script:
-#        - docker-compose ps
+  - name: deploy
+    image: appleboy/drone-ssh
+    settings:
+      host: 112.13.201.108
+      port: 22
+      username: root
+#      password: Qaz2@wsx
+      key:
+        from_secret: ssh_key
+      command_timeout: 3m
+      script_stop: false
+      script:
+        - docker-compose ps
 
   # 钉钉通知
   - name: dingtalk
@@ -63,19 +63,22 @@ steps:
 volumes:
   - name: maven_local_repo
     host:
-      path: /app/data/maven_local_repo
+#      path: /app/data/maven_local_repo
+      path: /data/maven/repository
 
----
-kind: pipeline
-type: ssh
-name: default
+#---
+#kind: pipeline
+#type: ssh
+#name: default
+#
+#server:
+#  host: 112.13.201.108
+#  user: root
+#  password: Qaz2@wsx
+#
+#steps:
+#  - name: greeting
+#    commands:
+#      - echo hello worldd
 
-server:
-  host: 112.13.201.108
-  user: root
-  password: Qaz2@wsx
 
-steps:
-  - name: greeting
-    commands:
-      - echo hello worldd
