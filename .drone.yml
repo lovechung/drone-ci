@@ -33,9 +33,9 @@ steps:
       host: localhost
       port: 2022
       username: root
-      password: Qaz2@wsx
-#      key:
-#        from_secret: ssh_key
+#      password: Qaz2@wsx
+      key:
+        from_secret: ssh_key
       command_timeout: 3m
       script_stop: false
       script:
