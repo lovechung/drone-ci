@@ -28,10 +28,10 @@ steps:
 
   # ssh远程执行脚本
   - name: deploy
-    image: appleboy/drone-ssh
+    image: appleboy/drone-ssh:1.5.5
     settings:
-      host: localhost
-      port: 2022
+      host: 127.0.0.1
+      port: 22
       username: root
 #      password: Qaz2@wsx
       key:
