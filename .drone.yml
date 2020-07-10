@@ -50,7 +50,7 @@ steps:
       type: markdown
       tpl: ./markdown.tpl
       message_color: true
-      success_color: CC00FF
+      success_color: 7fde54
       failure_color: e15430
       tpl_build_status_success: 成功
       tpl_build_status_failure: 失败
