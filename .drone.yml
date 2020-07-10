@@ -14,7 +14,7 @@ steps:
       - name: maven_local_repo
         path: /root/.m2
     commands:
-      - mvn clean -DskipTests=true -Dmaven.javadoc.skip=true dockerfile:build
+      - mvn clean -Ptest package -DskipTests=true -Dmaven.javadoc.skip=true dockerfile:push
   - name: docker
     image: plugins/docker
     settings:
