@@ -65,7 +65,7 @@
 #    host:
 #      path: /app/data/maven_local_repo
 
----
+#---
 kind: pipeline
 type: ssh
 name: default
