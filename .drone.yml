@@ -28,7 +28,7 @@ steps:
 
   # ssh远程执行脚本
   - name: deploy
-    image: appleboy/drone-ssh:1.5.5
+    image: appleboy/drone-ssh
     settings:
       host: 127.0.0.1
       port: 22
