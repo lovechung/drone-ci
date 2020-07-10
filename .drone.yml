@@ -64,3 +64,4 @@ volumes:
   - name: maven_local_repo
     host:
       path: /app/data/maven_local_repo
+
