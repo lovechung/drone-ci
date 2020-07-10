@@ -24,6 +24,7 @@ steps:
       registry: registry.cn-hangzhou.aliyuncs.com
       tags: latest
       dockerfile: ./Dockerfile
+      mirror: https://wm9kcxms.mirror.aliyuncs.com
 #  - name: deploy
 #    image: appleboy/drone-ssh
 #    settings:
