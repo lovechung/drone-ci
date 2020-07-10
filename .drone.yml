@@ -21,6 +21,7 @@ steps:
       username: dxk19911212
       password: dxk?19911212
       repo: registry.cn-hangzhou.aliyuncs.com/hbhb/drone-ci
+      registry: registry.cn-hangzhou.aliyuncs.com
       tags: latest
       dockerfile: ./Dockerfile
   - name: deploy
