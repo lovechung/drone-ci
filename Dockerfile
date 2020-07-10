@@ -3,4 +3,4 @@ VOLUME /tmp
 ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar", "-Djava.security.egd=file:/dev/./urandom", "/app.jar"]
-EXPOSE 8888
+EXPOSE 8887

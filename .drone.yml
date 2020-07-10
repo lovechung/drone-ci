@@ -8,18 +8,22 @@ volumes:
       path: /app/data/maven_local_repo
 
 steps:
+  # maven打包
   - name: build
     image: maven:3-jdk-8
     volumes:
       - name: maven_local_repo
         path: /root/.m2
     commands:
-      - mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
+      - mvn clean -Ptest package -DskipTests=true -Dmaven.javadoc.skip=true
+  # docker镜像推送
   - name: docker
     image: plugins/docker
     settings:
-      username: dxk19911212
-      password: dxk?19911212
+      username:
+        from_secret: docker_registry_username
+      password:
+        from_secret: docker_registry_password
       repo: registry.cn-hangzhou.aliyuncs.com/hbhb/drone-ci
       registry: registry.cn-hangzhou.aliyuncs.com
       tags: latest
@@ -27,6 +31,7 @@ steps:
       mirror: https://wm9kcxms.mirror.aliyuncs.com
       dry_run: true
       purge: true
+  # ssh远程执行脚本
   - name: deploy
     image: appleboy/drone-ssh
     settings:
@@ -53,6 +58,7 @@ steps:
   #      status:
   #        - failure
   #        - success
+  # 消息推送
   - name: notify
     image: yakumioto/drone-serverchan
     settings:
