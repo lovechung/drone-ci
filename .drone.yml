@@ -30,7 +30,7 @@ steps:
   - name: deploy
     image: appleboy/drone-ssh
     settings:
-      host: 127.0.0.1
+      host: 112.13.201.108
       port: 22
       username: root
 #      password: Qaz2@wsx
