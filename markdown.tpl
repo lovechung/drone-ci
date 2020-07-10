@@ -2,10 +2,10 @@
 
 ![]([TPL_STATUS_PIC])
 
-<font color=[TPL_STATUS_COLOR]> [TPL_COMMIT_MSG] - [TPL_COMMIT_BRANCH] </font>
+[TPL_COMMIT_MSG] - [TPL_COMMIT_BRANCH]
 
 [[TPL_AUTHOR_NAME]([TPL_AUTHOR_EMAIL])](mailto:[TPL_AUTHOR_EMAIL])
 
 [[TPL_COMMIT_SHA]]([TPL_COMMIT_LINK])
 
-[点击这里查看构建详情]([TPL_BUILD_LINK])
+<font color=[TPL_STATUS_COLOR]> [点击这里查看构建详情]([TPL_BUILD_LINK]) </font>
