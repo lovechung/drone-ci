@@ -1,16 +1,16 @@
-kind: pipeline
-type: docker
-name: default
-
-steps:
+#kind: pipeline
+#type: docker
+#name: default
+#
+#steps:
   # maven打包
-  - name: build
-    image: maven:3-jdk-8
-    volumes:
-      - name: maven_local_repo
-        path: /root/.m2
-    commands:
-      - mvn clean -Ptest package -DskipTests=true -Dmaven.javadoc.skip=true
+#  - name: build
+#    image: maven:3-jdk-8
+#    volumes:
+#      - name: maven_local_repo
+#        path: /root/.m2
+#    commands:
+#      - mvn clean -Ptest package -DskipTests=true -Dmaven.javadoc.skip=true
 
   # docker镜像推送
 #  - name: docker
@@ -27,58 +27,57 @@ steps:
 #      dockerfile: ./Dockerfile
 
   # ssh远程执行脚本
-  - name: deploy
-    image: appleboy/drone-ssh
-    settings:
-      host: 112.13.201.108
-      port: 22
-      username: root
-#      password: Qaz2@wsx
-      key:
-        from_secret: ssh_key
-      command_timeout: 3m
-      script_stop: false
-      script:
-        - docker-compose ps
+#  - name: deploy
+#    image: appleboy/drone-ssh
+#    settings:
+#      host: 112.13.201.108
+#      port: 22
+#      username: root
+##      password: Qaz2@wsx
+#      key:
+#        from_secret: ssh_key
+#      command_timeout: 3m
+#      script_stop: false
+#      script:
+#        - docker-compose ps
 
   # 钉钉通知
-  - name: dingtalk
-    image: lddsb/drone-dingtalk-message
-    settings:
-      token:
-        from_secret: dingtalk_token
-      type: markdown
-      tpl: ./markdown.tpl
-      tips_title: 新的构建已完成，请测试
-      message_color: true
-      success_color: 39D839
-      failure_color: E93939
-      tpl_build_status_success: 成功
-      tpl_build_status_failure: 失败
-      message_pic: true
-      sha_link: true
-    when:
-      status: [failure, success]
+#  - name: dingtalk
+#    image: lddsb/drone-dingtalk-message
+#    settings:
+#      token:
+#        from_secret: dingtalk_token
+#      type: markdown
+#      tpl: ./markdown.tpl
+#      tips_title: 新的构建已完成，请测试
+#      message_color: true
+#      success_color: 39D839
+#      failure_color: E93939
+#      tpl_build_status_success: 成功
+#      tpl_build_status_failure: 失败
+#      message_pic: true
+#      sha_link: true
+#    when:
+#      status: [failure, success]
 
-volumes:
-  - name: maven_local_repo
-    host:
+#volumes:
+#  - name: maven_local_repo
+#    host:
 #      path: /app/data/maven_local_repo
-      path: /data/maven/repository
 
-#---
-#kind: pipeline
-#type: ssh
-#name: default
-#
-#server:
-#  host: 112.13.201.108
-#  user: root
-#  password: Qaz2@wsx
-#
-#steps:
-#  - name: greeting
-#    commands:
-#      - echo hello worldd
+---
+kind: pipeline
+type: ssh
+name: default
+
+server:
+  host: 112.13.201.108
+  user: root
+  password: Qaz2@wsx
+
+steps:
+  - name: greeting
+    commands:
+      - echo hello worldd
 
 
