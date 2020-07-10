@@ -25,6 +25,8 @@ steps:
       tags: latest
       dockerfile: ./Dockerfile
       mirror: https://wm9kcxms.mirror.aliyuncs.com
+      dry_run: false
+      purge: false
 #  - name: deploy
 #    image: appleboy/drone-ssh
 #    settings:
@@ -58,18 +60,18 @@ steps:
       text: 部署{DRONE_BUILD_STATUS}
       desp: 耗时{{ since build.started }}, 点这里[查询]({{ build.link }})
 
----
-kind: pipeline
-type: ssh
-name: ssh-connect
-
-server:
-  host: 120.78.150.87
-  user: root
-  port: 22
-  password: root@iishoni.2017
-
-steps:
-  - name: greeting
-    commands:
-      - echo hello worldd
+#---
+#kind: pipeline
+#type: ssh
+#name: ssh-connect
+#
+#server:
+#  host: 120.78.150.87
+#  user: root
+#  port: 22
+#  password: root@iishoni.2017
+#
+#steps:
+#  - name: greeting
+#    commands:
+#      - echo hello worldd
