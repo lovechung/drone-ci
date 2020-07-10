@@ -27,19 +27,31 @@ steps:
 #      dockerfile: ./Dockerfile
 
   # ssh远程执行脚本
+#  - name: deploy
+#    image: appleboy/drone-ssh
+#    settings:
+#      host: 112.13.201.108
+#      port: 2022
+#      username: root
+#      password: Qaz2@wsx
+##      key:
+##        from_secret: ssh_key
+#      command_timeout: 3m
+#      script_stop: false
+#      script:
+#        - docker-compose ps
+
   - name: deploy
-    image: appleboy/drone-ssh
-    settings:
-      host: 112.13.201.108
-      port: 2022
-      username: root
-      password: Qaz2@wsx
-#      key:
-#        from_secret: ssh_key
-      command_timeout: 3m
-      script_stop: false
-      script:
-        - docker-compose ps
+      image: droneplugin/ssh
+      privileged: true
+      settings:
+        host: 112.13.201.108
+        port: 2022
+        user: root
+        password: Qaz2@wsx
+        command:
+          - ls
+          - echo hello
 
   # 钉钉通知
   - name: dingtalk
