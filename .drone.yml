@@ -60,7 +60,7 @@ steps:
 ---
 kind: pipeline
 type: ssh
-name: default
+name: ssh-connect
 
 server:
   host: 120.78.150.87
