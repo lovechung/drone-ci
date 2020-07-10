@@ -55,6 +55,3 @@ steps:
       text: 部署{DRONE_BUILD_STATUS}
       desp: 耗时{{ since build.started }}, 点这里[查询]({{ build.link }})
 
-
-
-
