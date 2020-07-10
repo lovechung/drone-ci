@@ -51,7 +51,7 @@ steps:
       tpl: ./markdown.tpl
       message_color: true
       success_color: CC00FF
-      failure_color: FF0000
+      failure_color: 808080
       tpl_build_status_success: 成功
       tpl_build_status_failure: 失败
       message_pic: true
