@@ -7,21 +7,22 @@ steps:
   - name: build
     image: maven:3-jdk-8
     volumes:
+      # 设置maven缓存
       - name: maven_local_repo
         path: /root/.m2
     commands:
-      - mvn clean -Ptest package -DskipTests=true -Dmaven.javadoc.skip=true
+      - mvn clean -Pprd package -DskipTests=true -Dmaven.javadoc.skip=true
 
   # docker镜像推送
   - name: docker
     image: plugins/docker
     settings:
-      username: dxk19911212
-      #        from_secret: docker_user
-      password: dxk?19911212
-      #        from_secret: docker_pwd
+      username:
+        from_secret: docker_user
+      password:
+        from_secret: docker_pwd
       mirror: https://wm9kcxms.mirror.aliyuncs.com
-      repo: registry.cn-hangzhou.aliyuncs.com/hbhb/ci-cd-demo
+      repo: registry.cn-hangzhou.aliyuncs.com/drone-ci
       registry: registry.cn-hangzhou.aliyuncs.com
       tags: latest
       dockerfile: ./Dockerfile
@@ -30,24 +31,21 @@ steps:
   - name: deploy
     image: appleboy/drone-ssh
     settings:
-      host: 112.13.201.108
+      host:
+        from_secret: ssh_host
       port: 22
-      username: root
-      password: Qaz2@wsx
-      #      key:
-      #        from_secret: ssh_key
+      username:
+        from_secret: ssh_user
+      key:
+        from_secret: ssh_key
       command_timeout: 3m
       script_stop: false
-      proxy_host: 120.78.150.87
-      proxy_port: 22
-      proxy_user: root
-      proxy_password: root@iishoni.2017
       script:
-        - docker-compose stop ci-cd-demo
+        - docker-compose stop drone-ci
         - cd ~ & ll
-        - docker-compose rm -f ci-cd-demo
-        - docker rmi registry.cn-hangzhou.aliyuncs.com/hbhb/ci-cd-demo
-        - docker-compose up -d ci-cd-demo
+        - docker-compose rm -f drone-ci
+        - docker rmi registry.cn-hangzhou.aliyuncs.com/drone-ci
+        - docker-compose up -d drone-ci
 
   # 钉钉通知
   - name: dingtalk
@@ -69,6 +67,7 @@ steps:
       status: [failure, success]
 
 volumes:
+  # 挂载在宿主机的maven缓存目录
   - name: maven_local_repo
     host:
       path: /data/maven

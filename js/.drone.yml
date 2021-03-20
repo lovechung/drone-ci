@@ -1,0 +1,103 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  ################# prd #################
+  # 启用缓存
+  - name: restore-cache
+    image: drillster/drone-volume-cache
+    settings:
+      restore: true
+      mount:
+        - ./node_modules
+    volumes:
+      # 设置node缓存目录
+      - name: node_cache
+        path: /cache
+    when:
+      branch:
+        - prd
+  # 打包
+  - name: build-prd
+    image: node:10-alpine
+    commands:
+      - node -v
+      - yarn -v
+      - yarn config set registry https://registry.npm.taobao.org -g
+      - yarn config set sass_binary_site https://npm.taobao.org/mirrors/node-sass/ -g
+      - yarn run build:${DRONE_BRANCH}
+    when:
+      branch:
+        - prd
+  # 更新缓存
+  - name: rebuild-cache
+    image: drillster/drone-volume-cache
+    settings:
+      rebuild: true
+      mount:
+        - ./node_modules
+    volumes:
+      - name: node_cache
+        path: /cache
+    when:
+      branch:
+        - prd
+
+  ################# dev,test #################
+  # 打包
+  - name: build
+    image: node:10-alpine
+    commands:
+      - node -v
+      - yarn -v
+      - yarn config set registry https://registry.npm.taobao.org -g
+      - yarn config set sass_binary_site https://npm.taobao.org/mirrors/node-sass/ -g
+      - yarn
+      - yarn run build:${DRONE_BRANCH}
+    when:
+      branch:
+        - dev
+        - test
+
+  # 部署
+  - name: deploy
+    image: appleboy/drone-scp
+    settings:
+      host:
+        from_secret: ssh_host
+      port: 22
+      username: root
+      key:
+        from_secret: ssh_key
+      command_timeout: 3m
+      target: /app/${DRONE_BRANCH}
+      source: dist/*
+      rm: true
+      strip_components: 1
+    when:
+      status:
+        - success
+  # 钉钉通知
+  - name: dingtalk
+    image: lddsb/drone-dingtalk-message
+    settings:
+      token:
+        from_secret: dingtalk_token
+      type: markdown
+      tpl: ./markdown.tpl
+      tips_title: 新的构建已完成，请测试
+      message_color: true
+      success_color: 39D839
+      failure_color: E93939
+      tpl_build_status_success: passed
+      tpl_buaild_status_failure: failed
+      sha_link: true
+    when:
+      status: [ failure, success ]
+
+volumes:
+  # 挂载在宿主机的node缓存目录
+  - name: node_cache
+    host:
+      path: /data/node
