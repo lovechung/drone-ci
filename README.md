@@ -1,8 +1,7 @@
 # drone-ci
 
-自动化部署
+基于[Drone CI](https://www.drone.io)的CI/CD最佳实践。
 
-[![Build Status](https://drone.yeexun.com.cn/api/badges/hbhb-devloper/drone-ci/status.svg)](https://drone.yeexun.com.cn/hbhb-devloper/drone-ci)
 
 
 
